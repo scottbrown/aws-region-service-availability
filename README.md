@@ -5,6 +5,8 @@ regions — **with per-endpoint-type granularity**, so sub-features (e.g. Amazon
 SES *inbound/SMTP* vs. its API) are distinguished from a service's overall
 presence in a region.
 
+**🌐 Live site: https://scottbrown.github.io/aws-region-service-availability**
+
 > **Unofficial.** This project is not affiliated with, sponsored by, or endorsed
 > by Amazon Web Services. It is derived from public AWS documentation and is
 > provided for convenience without any guarantee of accuracy. Always consult the
