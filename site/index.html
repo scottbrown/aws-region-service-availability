@@ -47,8 +47,14 @@
   td.svc { position: sticky; left: 0; z-index: 10; background: var(--panel); text-align: left;
     padding: 7px 12px; min-width: 260px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); cursor: pointer; }
   td.svc .ct { color: var(--muted); font-size: 11px; }
+  td.svc .svc-name { color: var(--accent2); font-weight: 500; }
+  td.svc:hover .svc-name { text-decoration: underline; }
   td.svc .badge { display: inline-block; margin-left: 6px; font-size: 10px; color: #f0b429; border: 1px solid #5a4a1a;
     border-radius: 10px; padding: 0 6px; }
+  td.svc .docs-link { margin-left: 8px; font-size: 10.5px; color: var(--muted); border: 1px solid var(--line);
+    border-radius: 5px; padding: 1px 6px; white-space: nowrap; opacity: 0; transition: opacity .12s; }
+  td.svc:hover .docs-link { opacity: 1; }
+  td.svc .docs-link:hover { color: var(--accent2); border-color: var(--accent2); text-decoration: none; }
   .reg-h { padding: 8px 6px; font-size: 11px; color: var(--muted); vertical-align: bottom; height: 130px; }
   .reg-h .rot, .reg-h .code { writing-mode: vertical-rl; transform: rotate(180deg); margin: 0 auto; }
   .reg-h .rot { font-weight: 600; color: var(--txt); }
@@ -93,7 +99,7 @@
   <h1><span class="amz">AWS</span> Service Availability by Region</h1>
   <div class="sub">Per-endpoint-type availability from the individual AWS service docs pages &middot;
     <a id="docslink" target="_blank" rel="noopener">source</a> &middot;
-    <span class="pill">click a service for endpoint-type detail</span></div>
+    <span class="pill">click a service name for endpoint-type detail</span></div>
   <div class="stats" id="stats"></div>
 </header>
 
@@ -177,16 +183,21 @@ function main(D) {
     h+='</tr></thead><tbody>';
     var rows=vsvcs.map(function(s,si){
       var badge = s._partialCount? '<span class="badge" title="'+s._partialCount+' region(s) have only some endpoint types">◐ '+s._partialCount+'</span>':'';
-      var c='<td class="svc" data-si="'+si+'"><a href="'+(s.url||('https://docs.aws.amazon.com/general/latest/gr/'+(s.slug||'')))+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+s.name+'</a> <span class="ct">'+s.regionCount+'</span>'+badge+'</td>';
+      var docs='https://docs.aws.amazon.com/general/latest/gr/'+(s.slug||'');
+      var c='<td class="svc" data-si="'+si+'"><span class="svc-name" title="Click for endpoint-type detail">'+s.name+'</span> <span class="ct">'+s.regionCount+'</span>'+badge
+        +' <a class="docs-link" href="'+docs+'" target="_blank" rel="noopener" title="Open AWS docs">docs&nbsp;↗</a></td>';
       for(var i=0;i<vregs.length;i++){var st=statusOf(s,vregs[i].code);
         var tip=s.name+' · '+vregs[i].code+' — '+(st==='full'?'available (all endpoint types)':st==='partial'?'PARTIAL — only some endpoint types':'not available');
         c+='<td class="cell '+st+'" title="'+tip+'"></td>';}
       return '<tr data-idx="'+si+'">'+c+'</tr>';
     });
     h+=rows.join('')+'</tbody></table>'; box.innerHTML=h;
-    // bind row click -> drawer (use the filtered list)
+    // bind service-cell click -> drawer (but let the docs link follow its href)
     box.querySelectorAll('td.svc').forEach(function(td){
-      td.addEventListener('click', function(){ openDrawer(vsvcs[+td.getAttribute('data-si')]); });
+      td.addEventListener('click', function(e){
+        if (e.target.closest('a.docs-link')) return;
+        openDrawer(vsvcs[+td.getAttribute('data-si')]);
+      });
     });
   }
 
