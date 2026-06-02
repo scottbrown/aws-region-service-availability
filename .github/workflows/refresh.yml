@@ -1,0 +1,67 @@
+name: Refresh & Deploy
+
+# Rebuilds the dataset from the public AWS docs and publishes the site to GitHub Pages.
+on:
+  schedule:
+    - cron: '0 6 1 * *'   # 06:00 UTC on the 1st of each month
+  workflow_dispatch: {}    # allow manual runs
+  push:
+    branches: [main]
+    paths:
+      - 'site/index.html'
+      - 'scripts/**'
+      - '.github/workflows/refresh.yml'
+
+permissions:
+  contents: write          # commit the refreshed dataset
+  pages: write             # deploy to Pages
+  id-token: write          # required by deploy-pages
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Discover service pages
+        run: bash scripts/discover.sh
+
+      - name: Fetch and extract
+        run: bash scripts/fetch_and_extract.sh
+
+      - name: Normalize and build dataset
+        run: python3 scripts/normalize_build.py
+
+      - name: Commit refreshed dataset (if changed)
+        run: |
+          if ! git diff --quiet -- site/aws-availability.json; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add site/aws-availability.json
+            git commit -m "chore: refresh AWS availability dataset ($(date -u +%Y-%m-%d))"
+            git push
+          else
+            echo "No dataset changes."
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

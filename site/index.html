@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AWS Service Availability by Region</title>
+<style>
+  :root {
+    --bg: #0f1419; --panel: #1a2027; --panel2: #232b34; --line: #2e3742;
+    --txt: #e6edf3; --muted: #8b98a5; --accent: #ff9900; --accent2: #2684ff;
+    --yes-cell: #143d27; --part-cell: #4a3a12; --no-cell: #1a2027; --hover: #314150;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--txt);
+    font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  a { color: var(--accent2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header { padding: 20px 24px 14px; border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, #161d24, #0f1419); }
+  h1 { margin: 0 0 4px; font-size: 20px; }
+  h1 .amz { color: var(--accent); }
+  .sub { color: var(--muted); font-size: 12.5px; }
+  .stats { display: flex; gap: 18px; margin-top: 12px; flex-wrap: wrap; }
+  .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 14px; min-width: 92px; }
+  .stat .n { font-size: 20px; font-weight: 700; color: var(--accent); }
+  .stat .l { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+
+  .controls { display: flex; gap: 12px; align-items: center; padding: 12px 24px;
+    border-bottom: 1px solid var(--line); flex-wrap: wrap; position: sticky; top: 0; z-index: 40; background: var(--bg); }
+  input[type=search], select { background: var(--panel2); border: 1px solid var(--line);
+    color: var(--txt); border-radius: 7px; padding: 8px 11px; font-size: 13px; outline: none; }
+  input[type=search] { min-width: 240px; }
+  input[type=search]:focus, select:focus { border-color: var(--accent2); }
+  .toggle { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; cursor: pointer; }
+  .count-note { color: var(--muted); font-size: 12.5px; margin-left: auto; }
+  .legend { display: inline-flex; gap: 14px; align-items: center; font-size: 12px; color: var(--muted); }
+  .legend .dot { font-size: 13px; }
+  .legend .full { color: #36c172; } .legend .part { color: #f0b429; }
+
+  .wrap { padding: 0 24px 40px; }
+  .tablebox { overflow: auto; border: 1px solid var(--line); border-radius: 10px; margin-top: 16px; max-height: calc(100vh - 250px); }
+  table { border-collapse: separate; border-spacing: 0; width: max-content; min-width: 100%; }
+  th, td { white-space: nowrap; }
+  thead th { position: sticky; top: 0; z-index: 20; background: var(--panel); border-bottom: 1px solid var(--line); }
+  .svc-h { position: sticky; left: 0; z-index: 30; background: var(--panel); text-align: left;
+    padding: 10px 12px; min-width: 260px; border-right: 1px solid var(--line); }
+  td.svc { position: sticky; left: 0; z-index: 10; background: var(--panel); text-align: left;
+    padding: 7px 12px; min-width: 260px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); cursor: pointer; }
+  td.svc .ct { color: var(--muted); font-size: 11px; }
+  td.svc .badge { display: inline-block; margin-left: 6px; font-size: 10px; color: #f0b429; border: 1px solid #5a4a1a;
+    border-radius: 10px; padding: 0 6px; }
+  .reg-h { padding: 8px 6px; font-size: 11px; color: var(--muted); vertical-align: bottom; height: 130px; }
+  .reg-h .rot, .reg-h .code { writing-mode: vertical-rl; transform: rotate(180deg); margin: 0 auto; }
+  .reg-h .rot { font-weight: 600; color: var(--txt); }
+  .reg-h .code { color: var(--muted); font-size: 10px; }
+  .grp-h { font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: var(--accent);
+    padding: 6px; border-bottom: 1px solid var(--line); text-align: center; background: var(--panel2); }
+  tbody td.cell { width: 30px; min-width: 30px; max-width: 30px; text-align: center;
+    border-bottom: 1px solid var(--line); border-right: 1px solid #20272f; cursor: default; }
+  tbody td.cell.full { background: var(--yes-cell); }
+  tbody td.cell.full::after { content: "●"; color: #36c172; font-size: 11px; }
+  tbody td.cell.partial { background: var(--part-cell); }
+  tbody td.cell.partial::after { content: "◐"; color: #f0b429; font-size: 12px; }
+  tbody td.cell.none { background: var(--no-cell); }
+  tbody td.cell.none::after { content: "·"; color: #3a4450; }
+  tbody tr:hover td.cell { background: var(--hover); }
+  tbody tr:hover td.svc { background: var(--hover); }
+
+  .empty { padding: 40px; text-align: center; color: var(--muted); }
+  footer { padding: 18px 24px 30px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); }
+  .pill { display: inline-block; background: var(--panel2); border: 1px solid var(--line); border-radius: 20px; padding: 1px 9px; font-size: 11px; color: var(--muted); }
+
+  /* detail drawer */
+  .drawer-bg { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: none; z-index: 90; }
+  .drawer-bg.open { display: block; }
+  .drawer { position: fixed; top: 0; right: 0; height: 100%; width: 460px; max-width: 90vw; background: var(--panel);
+    border-left: 1px solid var(--line); z-index: 100; transform: translateX(100%); transition: transform .18s ease;
+    overflow-y: auto; padding: 22px; }
+  .drawer.open { transform: translateX(0); }
+  .drawer h2 { margin: 0 0 4px; font-size: 18px; }
+  .drawer .close { position: absolute; top: 14px; right: 16px; cursor: pointer; color: var(--muted); font-size: 22px; line-height: 1; }
+  .et { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin: 12px 0; background: var(--panel2); }
+  .et .et-h { display: flex; justify-content: space-between; align-items: baseline; }
+  .et .et-h b { font-size: 13.5px; } .et .et-h span { color: var(--muted); font-size: 11px; }
+  .et .regs { margin-top: 7px; display: flex; flex-wrap: wrap; gap: 4px; }
+  .et .regs code { background: #143d27; color: #9fe6bb; border-radius: 4px; padding: 1px 6px; font-size: 11px; }
+  .et .excl { margin-top: 7px; font-size: 11.5px; color: #f0b429; }
+  .et .excl code { background: #4a3a12; color: #f0d28a; border-radius: 4px; padding: 1px 6px; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="amz">AWS</span> Service Availability by Region</h1>
+  <div class="sub">Per-endpoint-type availability from the individual AWS service docs pages &middot;
+    <a id="docslink" target="_blank" rel="noopener">source</a> &middot;
+    <span class="pill">click a service for endpoint-type detail</span></div>
+  <div class="stats" id="stats"></div>
+</header>
+
+<div class="controls">
+  <input type="search" id="svcSearch" placeholder="Search services… (e.g. ses, sagemaker)">
+  <select id="contFilter"><option value="">All continents</option></select>
+  <select id="regFilter"><option value="">All regions</option></select>
+  <label class="toggle"><input type="checkbox" id="onlyPartial"> Only services with partial regions</label>
+  <span class="legend">
+    <span><span class="dot full">●</span> all endpoint types</span>
+    <span><span class="dot part">◐</span> some endpoint types</span>
+    <span>· none</span>
+  </span>
+  <span class="count-note" id="countNote"></span>
+</div>
+
+<div class="wrap"><div class="tablebox" id="tablebox"><div class="empty">Loading…</div></div></div>
+
+<div class="drawer-bg" id="drawerBg"></div>
+<div class="drawer" id="drawer"><span class="close" id="drawerClose">×</span><div id="drawerBody"></div></div>
+
+<footer id="footer"></footer>
+
+<script>
+fetch('aws-availability.json').then(function(r){ return r.json(); }).then(main)
+  .catch(function(e){ document.getElementById('tablebox').innerHTML = '<div class="empty">Failed to load aws-availability.json — '+e+'</div>'; });
+
+function main(D) {
+  var CONT_ORDER = ["North America","South America","Europe","Middle East","Africa","Asia Pacific","Other"];
+  var regions = D.regions.slice().sort(function(a,b){
+    var ca=CONT_ORDER.indexOf(a.continent), cb=CONT_ORDER.indexOf(b.continent);
+    return ca!==cb ? ca-cb : (a.code<b.code?-1:1);
+  });
+  var services = D.services.slice().sort(function(a,b){ return a.name.toLowerCase()<b.name.toLowerCase()?-1:1; });
+  // index per service: region -> status
+  services.forEach(function(s){
+    s._status = s.regionStatus || {};
+    s._partialCount = Object.keys(s._status).filter(function(k){return s._status[k]==='partial';}).length;
+    s._set = new Set(s.regions);
+  });
+
+  document.getElementById('docslink').href = D.metadata.docsPage;
+  var statsEl = document.getElementById('stats');
+  [["Services", D.metadata.serviceCount],["Regions", D.metadata.regionCount],
+   ["Multi-endpoint svcs", D.metadata.multiEndpointTypeServices],
+   ["Partial cells", D.metadata.partialAvailabilityCells]]
+  .forEach(function(s){ var d=document.createElement('div'); d.className='stat';
+    d.innerHTML='<div class="n">'+s[1]+'</div><div class="l">'+s[0]+'</div>'; statsEl.appendChild(d); });
+
+  var contSel=document.getElementById('contFilter');
+  CONT_ORDER.filter(function(c){return regions.some(function(r){return r.continent===c;});})
+    .forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;contSel.appendChild(o);});
+  var regSel=document.getElementById('regFilter');
+  regions.forEach(function(r){var o=document.createElement('option');o.value=r.code;o.textContent=r.name+' ('+r.code+')';regSel.appendChild(o);});
+  var search=document.getElementById('svcSearch'), onlyPartial=document.getElementById('onlyPartial');
+
+  function visibleRegions(){var cont=contSel.value,reg=regSel.value;
+    return regions.filter(function(r){ if(reg)return r.code===reg; if(cont)return r.continent===cont; return true;});}
+  function visibleServices(vcodes){var q=search.value.trim().toLowerCase();
+    return services.filter(function(s){
+      if(q && s.name.toLowerCase().indexOf(q)===-1) return false;
+      if(onlyPartial.checked && s._partialCount===0) return false;
+      if(vcodes.length<regions.length){ if(!vcodes.some(function(c){return s._set.has(c);})) return false; }
+      return true;
+    });}
+
+  function statusOf(s, code){ if(s._status[code]) return s._status[code]; return s._set.has(code)?'full':'none'; }
+
+  function render(){
+    var vregs=visibleRegions(), vcodes=vregs.map(function(r){return r.code;});
+    var vsvcs=visibleServices(vcodes), box=document.getElementById('tablebox');
+    document.getElementById('countNote').textContent =
+      vsvcs.length+' / '+services.length+' services · '+vregs.length+' / '+regions.length+' regions';
+    if(!vsvcs.length||!vregs.length){box.innerHTML='<div class="empty">No matches.</div>';return;}
+    var groups=[]; vregs.forEach(function(r){var l=groups[groups.length-1];
+      if(l&&l.cont===r.continent)l.span++; else groups.push({cont:r.continent,span:1});});
+    var h='<table><thead><tr><th class="svc-h" rowspan="2">Service <span class="ct" style="font-weight:400">('+vsvcs.length+')</span></th>';
+    groups.forEach(function(g){h+='<th class="grp-h" colspan="'+g.span+'">'+g.cont+'</th>';});
+    h+='</tr><tr>';
+    vregs.forEach(function(r){h+='<th class="reg-h" title="'+r.name+' — '+r.serviceCount+' services"><span class="rot">'+r.name.replace(/^[^(]*\(|\)/g,'')+'</span><span class="code">'+r.code+'</span></th>';});
+    h+='</tr></thead><tbody>';
+    var rows=vsvcs.map(function(s,si){
+      var badge = s._partialCount? '<span class="badge" title="'+s._partialCount+' region(s) have only some endpoint types">◐ '+s._partialCount+'</span>':'';
+      var c='<td class="svc" data-si="'+si+'"><a href="'+(s.url||('https://docs.aws.amazon.com/general/latest/gr/'+(s.slug||'')))+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+s.name+'</a> <span class="ct">'+s.regionCount+'</span>'+badge+'</td>';
+      for(var i=0;i<vregs.length;i++){var st=statusOf(s,vregs[i].code);
+        var tip=s.name+' · '+vregs[i].code+' — '+(st==='full'?'available (all endpoint types)':st==='partial'?'PARTIAL — only some endpoint types':'not available');
+        c+='<td class="cell '+st+'" title="'+tip+'"></td>';}
+      return '<tr data-idx="'+si+'">'+c+'</tr>';
+    });
+    h+=rows.join('')+'</tbody></table>'; box.innerHTML=h;
+    // bind row click -> drawer (use the filtered list)
+    box.querySelectorAll('td.svc').forEach(function(td){
+      td.addEventListener('click', function(){ openDrawer(vsvcs[+td.getAttribute('data-si')]); });
+    });
+  }
+
+  function openDrawer(s){
+    var b=document.getElementById('drawerBody');
+    var ets=(s.endpointTypes||[]).map(function(et){
+      var regs=(et.regions||[]).slice().sort().map(function(c){return '<code>'+c+'</code>';}).join(' ');
+      var excl=(et.excludedByNote&&et.excludedByNote.length)?'<div class="excl">Excluded by note: '+et.excludedByNote.map(function(c){return '<code>'+c+'</code>';}).join(' ')+'</div>':'';
+      return '<div class="et"><div class="et-h"><b>'+et.type+'</b><span>'+(et.regionCount!=null?et.regionCount:(et.regions||[]).length)+' regions</span></div><div class="regs">'+(regs||'<span style="color:#8b98a5">—</span>')+'</div>'+excl+'</div>';
+    }).join('');
+    b.innerHTML='<h2>'+s.name+'</h2><div class="sub">scope: '+(s.scope||'regional')+' · '+(s.endpointTypeCount||((s.endpointTypes||[]).length))+' endpoint type(s) · union '+s.regionCount+' regions'
+      + (s.slug?' · <a href="https://docs.aws.amazon.com/general/latest/gr/'+s.slug+'" target="_blank" rel="noopener">docs</a>':'') + '</div>'
+      + (s._partialCount? '<div class="et" style="border-color:#5a4a1a"><b style="color:#f0b429">◐ '+s._partialCount+' region(s) partial</b><div class="sub" style="margin-top:4px">These regions offer some, but not all, endpoint types below.</div></div>':'')
+      + ets;
+    document.getElementById('drawer').classList.add('open');
+    document.getElementById('drawerBg').classList.add('open');
+  }
+  function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('drawerBg').classList.remove('open');}
+  document.getElementById('drawerClose').addEventListener('click',closeDrawer);
+  document.getElementById('drawerBg').addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeDrawer();});
+
+  var t; function deb(){clearTimeout(t);t=setTimeout(render,90);}
+  search.addEventListener('input',deb);
+  contSel.addEventListener('change',function(){regSel.value='';render();});
+  regSel.addEventListener('change',render);
+  onlyPartial.addEventListener('change',render);
+
+  document.getElementById('footer').innerHTML =
+    'Unofficial. Data derived from the '+D.metadata.serviceCount+' individual AWS service endpoint pages '
+    + '(<code>docs.aws.amazon.com/general/latest/gr/&lt;service&gt;.html</code>), normalized per endpoint type. '
+    + 'A cell is <span style="color:#36c172">●</span> when every endpoint type is offered in that region, '
+    + '<span style="color:#f0b429">◐</span> when only some are (e.g. Amazon SES has its API in ca-west-1 but not SMTP or Email-Receiving). '
+    + 'China (cn-*) and isolated partitions are excluded by AWS from these pages. '
+    + 'Not affiliated with or endorsed by Amazon Web Services — see the source docs for authoritative info.';
+  render();
+}
+</script>
+</body>
+</html>
