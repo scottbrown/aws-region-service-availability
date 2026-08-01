@@ -4,8 +4,8 @@
     "source": "Per-service endpoint pages (docs.aws.amazon.com/general/latest/gr/<service>.html), normalized per endpoint type",
     "serviceCount": 269,
     "regionCount": 36,
-    "multiEndpointTypeServices": 57,
-    "partialAvailabilityCells": 468,
+    "multiEndpointTypeServices": 58,
+    "partialAvailabilityCells": 475,
     "note": "A region is \"full\" if every endpoint type is offered there, \"partial\" if only some (e.g. SES API present but Inbound/SMTP absent in ca-west-1)."
   },
   "regions": [
@@ -14,35 +14,35 @@
       "name": "Canada (Central)",
       "continent": "North America",
       "partition": "aws",
-      "serviceCount": 205
+      "serviceCount": 204
     },
     {
       "code": "ca-west-1",
       "name": "Canada West (Calgary)",
       "continent": "North America",
       "partition": "aws",
-      "serviceCount": 119
+      "serviceCount": 120
     },
     {
       "code": "mx-central-1",
       "name": "Mexico (Central)",
       "continent": "North America",
       "partition": "aws",
-      "serviceCount": 111
+      "serviceCount": 112
     },
     {
       "code": "us-east-1",
       "name": "US East (N. Virginia)",
       "continent": "North America",
       "partition": "aws",
-      "serviceCount": 254
+      "serviceCount": 253
     },
     {
       "code": "us-east-2",
       "name": "US East (Ohio)",
       "continent": "North America",
       "partition": "aws",
-      "serviceCount": 219
+      "serviceCount": 220
     },
     {
       "code": "us-gov-east-1",
@@ -70,7 +70,7 @@
       "name": "US West (Oregon)",
       "continent": "North America",
       "partition": "aws",
-      "serviceCount": 247
+      "serviceCount": 246
     },
     {
       "code": "sa-east-1",
@@ -91,14 +91,14 @@
       "name": "Europe (Zurich)",
       "continent": "Europe",
       "partition": "aws",
-      "serviceCount": 136
+      "serviceCount": 137
     },
     {
       "code": "eu-north-1",
       "name": "Europe (Stockholm)",
       "continent": "Europe",
       "partition": "aws",
-      "serviceCount": 188
+      "serviceCount": 189
     },
     {
       "code": "eu-south-1",
@@ -112,14 +112,14 @@
       "name": "Europe (Spain)",
       "continent": "Europe",
       "partition": "aws",
-      "serviceCount": 150
+      "serviceCount": 151
     },
     {
       "code": "eu-west-1",
       "name": "Europe (Ireland)",
       "continent": "Europe",
       "partition": "aws",
-      "serviceCount": 243
+      "serviceCount": 242
     },
     {
       "code": "eu-west-2",
@@ -140,7 +140,7 @@
       "name": "Israel (Tel Aviv)",
       "continent": "Middle East",
       "partition": "aws",
-      "serviceCount": 140
+      "serviceCount": 141
     },
     {
       "code": "me-central-1",
@@ -175,21 +175,21 @@
       "name": "Asia Pacific (Taipei)",
       "continent": "Asia Pacific",
       "partition": "aws",
-      "serviceCount": 101
+      "serviceCount": 102
     },
     {
       "code": "ap-northeast-1",
       "name": "Asia Pacific (Tokyo)",
       "continent": "Asia Pacific",
       "partition": "aws",
-      "serviceCount": 226
+      "serviceCount": 227
     },
     {
       "code": "ap-northeast-2",
       "name": "Asia Pacific (Seoul)",
       "continent": "Asia Pacific",
       "partition": "aws",
-      "serviceCount": 207
+      "serviceCount": 209
     },
     {
       "code": "ap-northeast-3",
@@ -217,14 +217,14 @@
       "name": "Asia Pacific (Singapore)",
       "continent": "Asia Pacific",
       "partition": "aws",
-      "serviceCount": 223
+      "serviceCount": 222
     },
     {
       "code": "ap-southeast-2",
       "name": "Asia Pacific (Sydney)",
       "continent": "Asia Pacific",
       "partition": "aws",
-      "serviceCount": 236
+      "serviceCount": 235
     },
     {
       "code": "ap-southeast-3",
@@ -245,21 +245,21 @@
       "name": "Asia Pacific (Malaysia)",
       "continent": "Asia Pacific",
       "partition": "aws",
-      "serviceCount": 141
+      "serviceCount": 143
     },
     {
       "code": "ap-southeast-6",
       "name": "Asia Pacific (New Zealand)",
       "continent": "Asia Pacific",
       "partition": "aws",
-      "serviceCount": 102
+      "serviceCount": 105
     },
     {
       "code": "ap-southeast-7",
       "name": "Asia Pacific (Thailand)",
       "continent": "Asia Pacific",
       "partition": "aws",
-      "serviceCount": 120
+      "serviceCount": 121
     }
   ],
   "services": [
@@ -1197,6 +1197,7 @@
         "ca-west-1",
         "eu-central-1",
         "eu-north-1",
+        "eu-south-2",
         "eu-west-1",
         "eu-west-2",
         "eu-west-3",
@@ -1205,7 +1206,7 @@
         "us-east-2",
         "us-west-2"
       ],
-      "regionCount": 19,
+      "regionCount": 20,
       "endpointTypeCount": 1,
       "endpointTypes": [
         {
@@ -1224,6 +1225,7 @@
             "ca-west-1",
             "eu-central-1",
             "eu-north-1",
+            "eu-south-2",
             "eu-west-1",
             "eu-west-2",
             "eu-west-3",
@@ -1232,7 +1234,7 @@
             "us-east-2",
             "us-west-2"
           ],
-          "regionCount": 19,
+          "regionCount": 20,
           "excludedByNote": []
         }
       ],
@@ -1249,6 +1251,7 @@
         "ca-west-1": "full",
         "eu-central-1": "full",
         "eu-north-1": "full",
+        "eu-south-2": "full",
         "eu-west-1": "full",
         "eu-west-2": "full",
         "eu-west-3": "full",
@@ -3487,6 +3490,7 @@
           "type": "Amazon Q in Connect endpoints",
           "sectionId": "q_in_connect_region",
           "regions": [
+            "af-south-1",
             "ap-northeast-1",
             "ap-northeast-2",
             "ap-southeast-1",
@@ -3497,7 +3501,7 @@
             "us-east-1",
             "us-west-2"
           ],
-          "regionCount": 9,
+          "regionCount": 10,
           "excludedByNote": []
         }
       ],
@@ -5399,6 +5403,7 @@
       "scope": "regional",
       "regions": [
         "ap-northeast-1",
+        "ap-northeast-2",
         "ap-south-1",
         "ap-south-2",
         "ap-southeast-1",
@@ -5407,6 +5412,8 @@
         "ca-central-1",
         "ca-west-1",
         "eu-central-1",
+        "eu-central-2",
+        "eu-north-1",
         "eu-south-1",
         "eu-west-1",
         "eu-west-2",
@@ -5418,7 +5425,7 @@
         "us-west-1",
         "us-west-2"
       ],
-      "regionCount": 19,
+      "regionCount": 22,
       "endpointTypeCount": 1,
       "endpointTypes": [
         {
@@ -5426,6 +5433,7 @@
           "sectionId": "evs_region",
           "regions": [
             "ap-northeast-1",
+            "ap-northeast-2",
             "ap-south-1",
             "ap-south-2",
             "ap-southeast-1",
@@ -5434,6 +5442,8 @@
             "ca-central-1",
             "ca-west-1",
             "eu-central-1",
+            "eu-central-2",
+            "eu-north-1",
             "eu-south-1",
             "eu-west-1",
             "eu-west-2",
@@ -5445,12 +5455,13 @@
             "us-west-1",
             "us-west-2"
           ],
-          "regionCount": 19,
+          "regionCount": 22,
           "excludedByNote": []
         }
       ],
       "regionStatus": {
         "ap-northeast-1": "full",
+        "ap-northeast-2": "full",
         "ap-south-1": "full",
         "ap-south-2": "full",
         "ap-southeast-1": "full",
@@ -5459,6 +5470,8 @@
         "ca-central-1": "full",
         "ca-west-1": "full",
         "eu-central-1": "full",
+        "eu-central-2": "full",
+        "eu-north-1": "full",
         "eu-south-1": "full",
         "eu-west-1": "full",
         "eu-west-2": "full",
@@ -7446,6 +7459,7 @@
         "eu-west-1",
         "eu-west-2",
         "eu-west-3",
+        "il-central-1",
         "me-south-1",
         "sa-east-1",
         "us-east-1",
@@ -7454,7 +7468,7 @@
         "us-gov-west-1",
         "us-west-2"
       ],
-      "regionCount": 21,
+      "regionCount": 22,
       "endpointTypeCount": 1,
       "endpointTypes": [
         {
@@ -7475,6 +7489,7 @@
             "eu-west-1",
             "eu-west-2",
             "eu-west-3",
+            "il-central-1",
             "me-south-1",
             "sa-east-1",
             "us-east-1",
@@ -7483,7 +7498,7 @@
             "us-gov-west-1",
             "us-west-2"
           ],
-          "regionCount": 21,
+          "regionCount": 22,
           "excludedByNote": []
         }
       ],
@@ -7502,6 +7517,7 @@
         "eu-west-1": "full",
         "eu-west-2": "full",
         "eu-west-3": "full",
+        "il-central-1": "full",
         "me-south-1": "full",
         "sa-east-1": "full",
         "us-east-1": "full",
@@ -8158,6 +8174,7 @@
         "ap-southeast-3",
         "ap-southeast-4",
         "ap-southeast-5",
+        "ap-southeast-6",
         "ap-southeast-7",
         "ca-central-1",
         "ca-west-1",
@@ -8181,7 +8198,7 @@
         "us-west-1",
         "us-west-2"
       ],
-      "regionCount": 35,
+      "regionCount": 36,
       "endpointTypeCount": 1,
       "endpointTypes": [
         {
@@ -8201,6 +8218,7 @@
             "ap-southeast-3",
             "ap-southeast-4",
             "ap-southeast-5",
+            "ap-southeast-6",
             "ap-southeast-7",
             "ca-central-1",
             "ca-west-1",
@@ -8224,7 +8242,7 @@
             "us-west-1",
             "us-west-2"
           ],
-          "regionCount": 35,
+          "regionCount": 36,
           "excludedByNote": []
         }
       ],
@@ -8242,6 +8260,7 @@
         "ap-southeast-3": "full",
         "ap-southeast-4": "full",
         "ap-southeast-5": "full",
+        "ap-southeast-6": "full",
         "ap-southeast-7": "full",
         "ca-central-1": "full",
         "ca-west-1": "full",
@@ -11781,6 +11800,7 @@
         "ap-southeast-2",
         "ap-southeast-3",
         "ap-southeast-4",
+        "ap-southeast-5",
         "ca-central-1",
         "ca-west-1",
         "eu-central-1",
@@ -11800,7 +11820,7 @@
         "us-west-1",
         "us-west-2"
       ],
-      "regionCount": 29,
+      "regionCount": 30,
       "endpointTypeCount": 1,
       "endpointTypes": [
         {
@@ -11818,6 +11838,7 @@
             "ap-southeast-2",
             "ap-southeast-3",
             "ap-southeast-4",
+            "ap-southeast-5",
             "ca-central-1",
             "ca-west-1",
             "eu-central-1",
@@ -11837,7 +11858,7 @@
             "us-west-1",
             "us-west-2"
           ],
-          "regionCount": 29,
+          "regionCount": 30,
           "excludedByNote": []
         }
       ],
@@ -11853,6 +11874,7 @@
         "ap-southeast-2": "full",
         "ap-southeast-3": "full",
         "ap-southeast-4": "full",
+        "ap-southeast-5": "full",
         "ca-central-1": "full",
         "ca-west-1": "full",
         "eu-central-1": "full",
@@ -15237,6 +15259,7 @@
         "ap-southeast-3",
         "ap-southeast-4",
         "ap-southeast-5",
+        "ap-southeast-6",
         "ca-central-1",
         "eu-central-1",
         "eu-central-2",
@@ -15257,7 +15280,7 @@
         "us-west-1",
         "us-west-2"
       ],
-      "regionCount": 31,
+      "regionCount": 32,
       "endpointTypeCount": 1,
       "endpointTypes": [
         {
@@ -15276,6 +15299,7 @@
             "ap-southeast-3",
             "ap-southeast-4",
             "ap-southeast-5",
+            "ap-southeast-6",
             "ca-central-1",
             "eu-central-1",
             "eu-central-2",
@@ -15296,7 +15320,7 @@
             "us-west-1",
             "us-west-2"
           ],
-          "regionCount": 31,
+          "regionCount": 32,
           "excludedByNote": []
         }
       ],
@@ -15313,6 +15337,7 @@
         "ap-southeast-3": "full",
         "ap-southeast-4": "full",
         "ap-southeast-5": "full",
+        "ap-southeast-6": "full",
         "ca-central-1": "full",
         "eu-central-1": "full",
         "eu-central-2": "full",
@@ -16714,6 +16739,7 @@
       "regions": [
         "af-south-1",
         "ap-east-1",
+        "ap-east-2",
         "ap-northeast-1",
         "ap-northeast-2",
         "ap-northeast-3",
@@ -16723,7 +16749,11 @@
         "ap-southeast-2",
         "ap-southeast-3",
         "ap-southeast-4",
+        "ap-southeast-5",
+        "ap-southeast-6",
+        "ap-southeast-7",
         "ca-central-1",
+        "ca-west-1",
         "eu-central-1",
         "eu-central-2",
         "eu-north-1",
@@ -16735,6 +16765,7 @@
         "il-central-1",
         "me-central-1",
         "me-south-1",
+        "mx-central-1",
         "sa-east-1",
         "us-east-1",
         "us-east-2",
@@ -16743,7 +16774,7 @@
         "us-west-1",
         "us-west-2"
       ],
-      "regionCount": 30,
+      "regionCount": 36,
       "endpointTypeCount": 1,
       "endpointTypes": [
         {
@@ -16752,6 +16783,7 @@
           "regions": [
             "af-south-1",
             "ap-east-1",
+            "ap-east-2",
             "ap-northeast-1",
             "ap-northeast-2",
             "ap-northeast-3",
@@ -16761,7 +16793,11 @@
             "ap-southeast-2",
             "ap-southeast-3",
             "ap-southeast-4",
+            "ap-southeast-5",
+            "ap-southeast-6",
+            "ap-southeast-7",
             "ca-central-1",
+            "ca-west-1",
             "eu-central-1",
             "eu-central-2",
             "eu-north-1",
@@ -16773,6 +16809,7 @@
             "il-central-1",
             "me-central-1",
             "me-south-1",
+            "mx-central-1",
             "sa-east-1",
             "us-east-1",
             "us-east-2",
@@ -16781,13 +16818,14 @@
             "us-west-1",
             "us-west-2"
           ],
-          "regionCount": 30,
+          "regionCount": 36,
           "excludedByNote": []
         }
       ],
       "regionStatus": {
         "af-south-1": "full",
         "ap-east-1": "full",
+        "ap-east-2": "full",
         "ap-northeast-1": "full",
         "ap-northeast-2": "full",
         "ap-northeast-3": "full",
@@ -16797,7 +16835,11 @@
         "ap-southeast-2": "full",
         "ap-southeast-3": "full",
         "ap-southeast-4": "full",
+        "ap-southeast-5": "full",
+        "ap-southeast-6": "full",
+        "ap-southeast-7": "full",
         "ca-central-1": "full",
+        "ca-west-1": "full",
         "eu-central-1": "full",
         "eu-central-2": "full",
         "eu-north-1": "full",
@@ -16809,6 +16851,7 @@
         "il-central-1": "full",
         "me-central-1": "full",
         "me-south-1": "full",
+        "mx-central-1": "full",
         "sa-east-1": "full",
         "us-east-1": "full",
         "us-east-2": "full",
@@ -21277,41 +21320,12 @@
     {
       "slug": "panorama.html",
       "name": "AWS Panorama",
-      "scope": "regional",
-      "regions": [
-        "ap-southeast-1",
-        "ap-southeast-2",
-        "ca-central-1",
-        "eu-west-1",
-        "us-east-1",
-        "us-west-2"
-      ],
-      "regionCount": 6,
-      "endpointTypeCount": 1,
-      "endpointTypes": [
-        {
-          "type": "Service endpoints",
-          "sectionId": "panorama_region",
-          "regions": [
-            "ap-southeast-1",
-            "ap-southeast-2",
-            "ca-central-1",
-            "eu-west-1",
-            "us-east-1",
-            "us-west-2"
-          ],
-          "regionCount": 6,
-          "excludedByNote": []
-        }
-      ],
-      "regionStatus": {
-        "ap-southeast-1": "full",
-        "ap-southeast-2": "full",
-        "ca-central-1": "full",
-        "eu-west-1": "full",
-        "us-east-1": "full",
-        "us-west-2": "full"
-      }
+      "scope": "unknown",
+      "regions": [],
+      "regionCount": 0,
+      "endpointTypeCount": 0,
+      "endpointTypes": [],
+      "regionStatus": {}
     },
     {
       "slug": "pcs.html",
@@ -21320,6 +21334,7 @@
       "regions": [
         "af-south-1",
         "ap-northeast-1",
+        "ap-northeast-2",
         "ap-northeast-3",
         "ap-south-1",
         "ap-southeast-1",
@@ -21339,7 +21354,7 @@
         "us-gov-west-1",
         "us-west-2"
       ],
-      "regionCount": 20,
+      "regionCount": 21,
       "endpointTypeCount": 1,
       "endpointTypes": [
         {
@@ -21348,6 +21363,7 @@
           "regions": [
             "af-south-1",
             "ap-northeast-1",
+            "ap-northeast-2",
             "ap-northeast-3",
             "ap-south-1",
             "ap-southeast-1",
@@ -21367,13 +21383,14 @@
             "us-gov-west-1",
             "us-west-2"
           ],
-          "regionCount": 20,
+          "regionCount": 21,
           "excludedByNote": []
         }
       ],
       "regionStatus": {
         "af-south-1": "full",
         "ap-northeast-1": "full",
+        "ap-northeast-2": "full",
         "ap-northeast-3": "full",
         "ap-south-1": "full",
         "ap-southeast-1": "full",
@@ -23155,7 +23172,7 @@
         "us-west-2"
       ],
       "regionCount": 36,
-      "endpointTypeCount": 1,
+      "endpointTypeCount": 2,
       "endpointTypes": [
         {
           "type": "Service endpoints",
@@ -23200,12 +23217,49 @@
           ],
           "regionCount": 36,
           "excludedByNote": []
+        },
+        {
+          "type": "OAuth service endpoints",
+          "sectionId": "signin_oauth_region",
+          "regions": [
+            "af-south-1",
+            "ap-east-1",
+            "ap-northeast-1",
+            "ap-northeast-2",
+            "ap-northeast-3",
+            "ap-south-1",
+            "ap-south-2",
+            "ap-southeast-1",
+            "ap-southeast-2",
+            "ap-southeast-3",
+            "ap-southeast-4",
+            "ca-central-1",
+            "ca-west-1",
+            "eu-central-1",
+            "eu-central-2",
+            "eu-north-1",
+            "eu-south-1",
+            "eu-south-2",
+            "eu-west-1",
+            "eu-west-2",
+            "eu-west-3",
+            "il-central-1",
+            "me-central-1",
+            "me-south-1",
+            "sa-east-1",
+            "us-east-1",
+            "us-east-2",
+            "us-west-1",
+            "us-west-2"
+          ],
+          "regionCount": 29,
+          "excludedByNote": []
         }
       ],
       "regionStatus": {
         "af-south-1": "full",
         "ap-east-1": "full",
-        "ap-east-2": "full",
+        "ap-east-2": "partial",
         "ap-northeast-1": "full",
         "ap-northeast-2": "full",
         "ap-northeast-3": "full",
@@ -23215,9 +23269,9 @@
         "ap-southeast-2": "full",
         "ap-southeast-3": "full",
         "ap-southeast-4": "full",
-        "ap-southeast-5": "full",
-        "ap-southeast-6": "full",
-        "ap-southeast-7": "full",
+        "ap-southeast-5": "partial",
+        "ap-southeast-6": "partial",
+        "ap-southeast-7": "partial",
         "ca-central-1": "full",
         "ca-west-1": "full",
         "eu-central-1": "full",
@@ -23231,12 +23285,12 @@
         "il-central-1": "full",
         "me-central-1": "full",
         "me-south-1": "full",
-        "mx-central-1": "full",
+        "mx-central-1": "partial",
         "sa-east-1": "full",
         "us-east-1": "full",
         "us-east-2": "full",
-        "us-gov-east-1": "full",
-        "us-gov-west-1": "full",
+        "us-gov-east-1": "partial",
+        "us-gov-west-1": "partial",
         "us-west-1": "full",
         "us-west-2": "full"
       }
@@ -26884,6 +26938,7 @@
       "name": "Service quotas and endpoints for AWS HealthOmics",
       "scope": "regional",
       "regions": [
+        "ap-northeast-1",
         "ap-northeast-2",
         "ap-southeast-1",
         "eu-central-1",
@@ -26891,15 +26946,17 @@
         "eu-west-2",
         "il-central-1",
         "us-east-1",
+        "us-east-2",
         "us-west-2"
       ],
-      "regionCount": 8,
+      "regionCount": 10,
       "endpointTypeCount": 1,
       "endpointTypes": [
         {
           "type": "API",
           "sectionId": null,
           "regions": [
+            "ap-northeast-1",
             "ap-northeast-2",
             "ap-southeast-1",
             "eu-central-1",
@@ -26907,13 +26964,15 @@
             "eu-west-2",
             "il-central-1",
             "us-east-1",
+            "us-east-2",
             "us-west-2"
           ],
-          "regionCount": 8,
+          "regionCount": 10,
           "excludedByNote": []
         }
       ],
       "regionStatus": {
+        "ap-northeast-1": "full",
         "ap-northeast-2": "full",
         "ap-southeast-1": "full",
         "eu-central-1": "full",
@@ -26921,6 +26980,7 @@
         "eu-west-2": "full",
         "il-central-1": "full",
         "us-east-1": "full",
+        "us-east-2": "full",
         "us-west-2": "full"
       }
     },
